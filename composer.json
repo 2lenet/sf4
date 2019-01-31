@@ -11,11 +11,18 @@
         "symfony/console": "*",
         "symfony/dotenv": "*",
         "symfony/flex": "^1.1",
-        "symfony/orm": "*",
-        "symfony/debug": "*",
-        "symfony/maker": "*",
         "symfony/framework-bundle": "*",
-        "symfony/yaml": "*"
+        "symfony/yaml": "*",
+        "doctrine/doctrine-bundle": "*"
+    },
+    "require-dev": {
+        "symfony/browser-kit": "^4.0",
+        "symfony/css-selector": "^4.0",
+        "symfony/dotenv": "^4.0",
+        "symfony/maker-bundle": "^1.5",
+        "symfony/phpunit-bridge": "^4.0",
+        "symfony/profiler-pack": "^1.0",
+        "symfony/web-server-bundle": "^4.0"
     },
     "config": {
         "preferred-install": {

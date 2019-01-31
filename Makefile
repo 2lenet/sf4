@@ -24,8 +24,8 @@ console:
 
 migrate:
 	if [[ $(id -u) -ne 0 ]] ; then echo "Please run in make console" ; exit 1 ; fi
-	bin/console doc:schem:up --force
-	#bin/console doc:mi:mi -n
+	#bin/console doc:schem:up --force
+	bin/console doc:mi:mi -n
 
 db:
 	if [[ $(id -u) -ne 0 ]] ; then echo "Please run in make console" ; exit 1 ; fi

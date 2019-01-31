@@ -2,23 +2,22 @@ stages:
   - test
   - analysis
   - build
-
-variables:
-  MYSQL_DATABASE: db
-  MYSQL_ROOT_PASSWORD: pass
+  - deploy
 
 services:
-- name: mysql:5.7
-  alias: database
+- name: mysql
+  alias: dbtest
+- name: redis
+  alias: redis
 
 unittest:
-  image: registry.2le.net/2le/2le:base-php7-xdebug
+  #image: registry.2le.net/2le/2le:base-php7-xdebug
+  image: registry.2le.net/2le/2le:base-php7
   type: test
   script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.2le.net
     - composer install
-    - bin/console doc:schem:up --force
-    #- bin/console doc:fix:load -n
-    - bin/phpunit --coverage-clover phpunit.coverage.xml --log-junit phpunit.report.xml
+    - make test
   artifacts:
       paths:
         - phpunit.coverage.xml
@@ -33,17 +32,30 @@ sonarqube:
   script:
   - gitlab-sonar-scanner
 
+
 build:
   image: registry.2le.net/2le/2le:base-php7
   type: build
+  only:
+  - master
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - make build
 
-#deploy:
-#  image: registry.2le.net/2le/2le:base-php7
-#  type: deploy
-#  script:
-#    - ssh -o StrictHostKeyChecking=no root@SERVER /root/APPLI/up.sh
-#  only:
-#    - master
+buildprod:
+  image: registry.2le.net/2le/2le:base-php7
+  type: build
+  only:
+    - prod
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - make buildprod
+
+    
+deploy:
+  image: registry.2le.net/2le/2le:base-php7
+  type: deploy
+  only:
+  - master
+  script:
+    - ssh -o StrictHostKeyChecking=no root@SERVER /root/PROJECT/up.sh

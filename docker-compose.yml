@@ -1,0 +1,21 @@
+version: '3.2'
+
+services:
+  database:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: sf4
+    volumes:
+      - database:/var/lib/mysql
+
+  symfony:
+    build: .
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html/
+    ports:
+      - 127.0.0.1:8000:80
+      
+volumes:
+  database: ~
